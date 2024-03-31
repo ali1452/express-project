@@ -4,7 +4,7 @@ const User = require('../modals/userModal')
 
 
 const getUser= asyncHandler(async (req, res, next) => {
-        console.log('get request')
+        // console.log('get request successfully',req.query.first_name)
         const user = await User.find()
         res.status(200).json(user)
     })
