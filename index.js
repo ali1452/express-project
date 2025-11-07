@@ -8,7 +8,7 @@ var cors = require('cors')
 
 connectDb()
 
-const  PORT= process.env.PORT
+const PORT= process.env.PORT
 const app = express()
 app.use(cors())
 const port = PORT  || 5000
