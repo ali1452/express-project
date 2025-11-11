@@ -3,6 +3,7 @@ const express = require('express')
 const router = require('./router/router')
 const orderRouter = require('./router/orderRouter')
 const productRouter = require('./router/productRouter')
+const favoriteRouter = require('./router/favoriteRouter')
 const connectDb = require('./config/dbConnection')
 var cors = require('cors')
 
@@ -18,6 +19,7 @@ app.use(express.json())
 app.use('/user',router)
 app.use('/orders',orderRouter)
 app.use('/products',productRouter)
+app.use('/favorites',favoriteRouter)
 
 
 app.listen(port, () => {
