@@ -11,42 +11,55 @@ const getFavorites = asyncHandler(async (req, res, next) => {
         })
     })
 
-    const addFavorite = asyncHandler(async (req, res, next) => {
+    const addRemoveFavourite = asyncHandler(async (req, res, next) => {
         const userId = req.user._id
-        const { product_id, name, price, url, description } = req.body
+        const { product_id, name, price, image_url, description, isFavourite } = req.body
 
-        if(!product_id || !name){
-            console.log('product_id and name are required to add favourite')
-            return res.status(400).json({
-                success: false,
-                message: 'product_id and name are required'
-            })
-        }
+        const existingFavorite = await Favorite.findOne({ user: userId, product_id })
 
         try {
-            const existingFavorite = await Favorite.findOne({ user: userId, product_id })
+            if(isFavourite){
+                if(!existingFavorite){
+                    const favorite = await Favorite.create({
+                        user: userId,
+                        product_id,
+                        name,
+                        price,
+                        image_url,
+                        description,
+                        isFavourite
+                    })
+    
+                    return res.status(201).json({
+                        success: true,
+                        data: favorite
+                    })
 
-            if(existingFavorite){
-                console.log('favourite already exists for product', product_id)
-                return res.status(409).json({
-                    success: false,
-                    message: 'product already added to favourites'
+                }
+                else{
+                    return res.status(409).json({
+                        success: false,
+                        message: 'product already added to favourites'
+                    })
+                }
+                
+            }else{
+                if(!existingFavorite){
+                    return res.status(404).json({
+                        success: false,
+                        message: 'favourite not found for this product'
+                    })
+                }
+    
+                await Favorite.deleteOne({ _id: existingFavorite._id })
+    
+                res.status(200).json({
+                    success: true,
+                    message: 'favourite removed successfully'
                 })
+
             }
 
-            const favorite = await Favorite.create({
-                user: userId,
-                product_id,
-                name,
-                price,
-                image_url,
-                description
-            })
-
-            res.status(201).json({
-                success: true,
-                data: favorite
-            })
         } catch (error) {
             console.log(error)
             res.status(500).json({
@@ -57,4 +70,4 @@ const getFavorites = asyncHandler(async (req, res, next) => {
         }
     })
 
-module.exports  = {getFavorites, addFavorite}
+module.exports  = {getFavorites, addRemoveFavourite}
