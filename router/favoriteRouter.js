@@ -1,5 +1,5 @@
 const express = require('express')
-const { getFavorites, addFavorite } = require('../controller/favoriteController')
+const { getFavorites, addRemoveFavourite } = require('../controller/favoriteController')
 const authMiddleware = require('../middleware/authMiddleware')
 
 const app = express()
@@ -10,7 +10,7 @@ route.use((req,res,next)=>authMiddleware(req,res,next))
 
 route.get('/',(req,res)=>getFavorites(req,res))
 
-route.post('/',(req,res)=>addFavorite(req,res))
+route.post('/',(req,res)=>addRemoveFavourite(req,res))
 
 
 module.exports = route

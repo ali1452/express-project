@@ -23,6 +23,11 @@ const favoriteSchema = mongoose.Schema(
         },
         description:{
             type: String
+        },
+        isFavourite:{
+            type: Boolean,
+            require:[true,"please add isFavourite flag."],
+            default: false
         }
     },
     {
