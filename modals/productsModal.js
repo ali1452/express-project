@@ -45,8 +45,12 @@ const productsSchema = mongoose.Schema(
         edit:{
             type:Boolean,
             require:[true,"please add edit status"]
-        }
-        
+        },
+        is_favourite:{
+            type:Boolean,
+            require:[true,"please add isFavourite flag."],
+            default: false
+        },
     },
     {
         timeStamps:true

@@ -24,6 +24,12 @@ const favoriteSchema = mongoose.Schema(
         description:{
             type: String
         },
+        brad : {
+            type: String
+        },
+        category : {
+            type: String
+        },
         isFavourite:{
             type: Boolean,
             require:[true,"please add isFavourite flag."],
