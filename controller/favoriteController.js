@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Favorite = require('../modals/favoriteModal')
+const products = require('../modals/productsModal')
 
 
 const getFavorites = asyncHandler(async (req, res, next) => {
@@ -13,9 +14,21 @@ const getFavorites = asyncHandler(async (req, res, next) => {
 
     const addRemoveFavourite = asyncHandler(async (req, res, next) => {
         const userId = req.user._id
-        const { product_id, name, price, image_url, description, isFavourite } = req.body
+        const { product_id, isFavourite  } = req.body
 
-        const existingFavorite = await Favorite.findOne({ user: userId, product_id })
+       
+        const productDetails =  await products.findOne({product_id:product_id})
+
+        if(!productDetails){
+            return res.status(404).json({
+                success: false,
+                message: 'product not found'
+            })
+        }
+        
+        const { name, price, url, description, brand, category } = productDetails
+
+        const   existingFavorite = await Favorite.findOne({ user: userId, product_id })
 
         try {
             if(isFavourite){
@@ -25,9 +38,11 @@ const getFavorites = asyncHandler(async (req, res, next) => {
                         product_id,
                         name,
                         price,
-                        image_url,
+                        image_url:url,
                         description,
-                        isFavourite
+                        brand,
+                        category,
+                        isFavourite,
                     })
     
                     return res.status(201).json({
