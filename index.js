@@ -16,7 +16,7 @@ const port = PORT  || 5000
 console.log({PORT})
 app.use(express.json())
 
-app.use('/user',router)
+app.use('/users',router)
 app.use('/orders',orderRouter)
 app.use('/products',productRouter)
 app.use('/favorites',favoriteRouter)
